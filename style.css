@@ -1,7 +1,14 @@
 body {
     font-family: Arial, sans-serif;
     width: 300px;
-    padding: 10px;
+}
+
+.title-container {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f8f8f8; /* Optional: Light background for contrast */
+    border-bottom: 1px solid #ddd; /* Optional: Divider line */
 }
 
 h2 {
