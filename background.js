@@ -1,8 +1,8 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getCookies") {
     chrome.cookies.getAll({ url: request.url }, (cookies) => {
-      const categorizedCookies = categorizeCookies(cookies, request.url);
-      sendResponse(categorizedCookies);
+      // Ensure cookies is an array before sending
+      sendResponse({ cookies: cookies || [] });
     });
     return true; // Keeps the message channel open for asynchronous response
   }
