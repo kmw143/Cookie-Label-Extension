@@ -1,5 +1,6 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getCookies") {
+    // Use chrome.cookies.getAll to retrieve cookies for the specified URL
     chrome.cookies.getAll({ url: request.url }, (cookies) => {
       sendResponse({ cookies });
     });
