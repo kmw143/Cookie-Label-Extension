@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     chrome.cookies.getAll({ url: request.url }, (cookies) => {
       sendResponse({ cookies });
     });
-    return true;
+    return true; // Indicates that the response is asynchronous
   }
 });
 
