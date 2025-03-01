@@ -22,7 +22,8 @@ h2 {
     border-radius: 5px;
 }
 
-.essential { background-color: #d4edda; } /* Green */
-.functional { background-color: #cce5ff; } /* Blue */
-.statistics { background-color: #fff3cd; } /* Yellow */
+.functional { background-color: #d4edda; } /* Green */
+.analytics { background-color: #cce5ff; } /* Blue */
+.preferences { background-color: #fff3cd; } /* Yellow */
 .marketing { background-color: #f8d7da; } /* Red */
+.unknown { background-color: #e9ecef; } /* Gray */
