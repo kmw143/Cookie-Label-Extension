@@ -1,17 +1,25 @@
 body {
   font-family: Arial, sans-serif;
+  width: 400px;
+  padding: 20px;
 }
 
-.title-container {
-  width: 100%;
-  text-align: center;
+.cookie-category {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .cookie-item {
+  margin-bottom: 10px;
+  padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.Analytics { background-color: #d4edda; } /* Green */
-.Functional { background-color: #cce5ff; } /* Blue */
-.Preferences { background-color: #fff3cd; } /* Yellow */
-.Marketing { background-color: #f8d7da; } /* Red */
+.functional { background-color: #d4edda; }
+.analytics { background-color: #cce5ff; }
+.preferences { background-color: #fff3cd; }
+.marketing { background-color: #f8d7da; }
+.other { background-color: #e9ecef; }
