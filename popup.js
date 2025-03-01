@@ -35,10 +35,10 @@ function displayCookies(cookies) {
 }
 
 function categorizeCookie(cookie) {
-  if (cookie.httpOnly || cookie.secure) return "essential";
-  if (cookie.domain.includes("analytics") || cookie.name.includes("ga_")) return "statistics";
-  if (cookie.name.includes("session") || cookie.name.includes("lang")) return "functional";
-  if (cookie.name.includes("ad") || cookie.name.includes("track")) return "marketing";
-  return "unknown";
+  if (cookie.name.toLowerCase().includes("analytics") || cookie.name.toLowerCase().includes("ga_")) return "Analytics";
+  if (cookie.httpOnly || cookie.secure || cookie.name.toLowerCase().includes("session")) return "Functional";
+  if (cookie.name.toLowerCase().includes("pref") || cookie.name.toLowerCase().includes("lang")) return "Preferences";
+  if (cookie.name.toLowerCase().includes("ad") || cookie.name.toLowerCase().includes("track")) return "Marketing";
+  return "Unknown";
 }
 
