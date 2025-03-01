@@ -3,7 +3,7 @@
   "name": "Cookie Nutrition Label",
   "description": "Displays a cookie nutrition label when visiting a website",
   "version": "1.0",
-  "permissions": ["cookies", "storage", "activeTab", "scripting"],
+  "permissions": ["cookies", "activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
@@ -11,12 +11,6 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": "hello_extensions.png"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "run_at": "document_end"
-    }
-  ]
+  }
 }
+
