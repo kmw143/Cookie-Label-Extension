@@ -18,62 +18,38 @@ function displayCookies(cookies) {
   }
   
   const categories = {
-    functional: [],
-    analytics: [],
-    preferences: [],
-    marketing: [],
-    unknown: []
+    functional: { firstParty: 0, thirdParty: 0, cookies: [] },
+    analytics: { firstParty: 0, thirdParty: 0, cookies: [] },
+    preferences: { firstParty: 0, thirdParty: 0, cookies: [] },
+    marketing: { firstParty: 0, thirdParty: 0, cookies: [] },
+    unknown: { firstParty: 0, thirdParty: 0, cookies: [] }
   };
-  
-  let firstPartyCookies = 0;
-  let thirdPartyCookies = 0;
   
   cookies.forEach((cookie) => {
     let category = categorizeCookie(cookie);
-    categories[category].push(cookie);
+    let isFirstParty = isFirstPartyCookie(cookie);
     
-    // Count first-party and third-party cookies
-    if (isFirstPartyCookie(cookie)) {
-      firstPartyCookies++;
+    categories[category].cookies.push(cookie);
+    if (isFirstParty) {
+      categories[category].firstParty++;
     } else {
-      thirdPartyCookies++;
+      categories[category].thirdParty++;
     }
   });
   
-  // Display cookie count
-  const countDiv = document.createElement("div");
-  countDiv.innerHTML = `
-    <h3>Cookie Count</h3>
-    <p>First-party cookies: ${firstPartyCookies}</p>
-    <p>Third-party cookies: ${thirdPartyCookies}</p>
-  `;
-  container.appendChild(countDiv);
-  
-  // Display cookies by category (existing code)
-  for (const [category, cookieList] of Object.entries(categories)) {
-    if (cookieList.length > 0) {
+  for (const [category, data] of Object.entries(categories)) {
+    if (data.cookies.length > 0) {
       const categoryDiv = document.createElement("div");
-      categoryDiv.innerHTML = `<h3>${category.charAt(0).toUpperCase() + category.slice(1)} Cookies (${cookieList.length})</h3>`;
-      cookieList.forEach((cookie) => {
+      categoryDiv.innerHTML = `
+        <h3>${category.charAt(0).toUpperCase() + category.slice(1)} Cookies</h3>
+        <p>First-party: ${data.firstParty}, Third-party: ${data.thirdParty}</p>
+      `;
+      data.cookies.forEach((cookie) => {
         const cookieDiv = document.createElement("div");
         cookieDiv.classList.add("cookie-item", category);
         cookieDiv.innerHTML = `
           <p><strong>Name:</strong> ${cookie.name}</p>
           <p><strong>Domain:</strong> ${cookie.domain}</p>
-          <p><strong>Expires:</strong> ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
-        `;
-        categoryDiv.appendChild(cookieDiv);
-      });
-      container.appendChild(categoryDiv);
-    }
-  }
-}
-
-function isFirstPartyCookie(cookie) {
-  // Compare the cookie domain with the current tab's domain
-  // This is a simplified check and might need to be adjusted based on your specific requirements
-  return cookie.domain === window.location.hostname;
-}
 
 
 function categorizeCookie(cookie) {
