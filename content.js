@@ -1,27 +1,21 @@
 chrome.runtime.sendMessage({ action: "getCookies", url: window.location.href }, (response) => {
-  if (response && response.cookies && Array.isArray(response.cookies)) {
-    response.cookies.forEach((cookie) => {
-      console.log(`Cookie: ${cookie.name}, Category: ${categorizeCookie(cookie)}`);
-    });
-  } else {
-    console.error("No cookies found or response is invalid.");
-  }
+  response.cookies.forEach((cookie) => {
+    console.log(`Cookie: ${cookie.name}, Category: ${categorizeCookie(cookie)}`);
+  });
 });
 
 function categorizeCookie(cookie) {
-  // Categorize cookies into Analytics, Functional, Preferences, and Marketing
-  if (cookie.name.toLowerCase().includes("analytics") || cookie.name.toLowerCase().includes("ga_")) {
-    return "Analytics"; // Cookies used for tracking website performance and user behavior
+  if (cookie.name.includes("session") || cookie.name.includes("auth") || cookie.name.includes("token")) {
+    return "Functional";
   }
-  if (cookie.httpOnly || cookie.secure || cookie.name.toLowerCase().includes("session")) {
-    return "Functional"; // Cookies critical to maintaining the website's core functions
+  if (cookie.name.includes("ga_") || cookie.name.includes("analytics") || cookie.name.includes("_utm")) {
+    return "Analytics";
   }
-  if (cookie.name.toLowerCase().includes("pref") || cookie.name.toLowerCase().includes("lang")) {
-    return "Preferences"; // Cookies that remember user preferences
+  if (cookie.name.includes("pref") || cookie.name.includes("theme") || cookie.name.includes("lang")) {
+    return "Preferences";
   }
-  if (cookie.name.toLowerCase().includes("ad") || cookie.name.toLowerCase().includes("track")) {
-    return "Marketing"; // Cookies used for tracking and targeting ads
+  if (cookie.name.includes("ad") || cookie.name.includes("track") || cookie.name.includes("market")) {
+    return "Marketing";
   }
-  return "Unknown"; // Default category if no match is found
+  return "Other";
 }
-
