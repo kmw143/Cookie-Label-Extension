@@ -11,13 +11,14 @@ function displayCookies(cookies) {
   const container = document.getElementById("cookie-list");
   container.innerHTML = "";
 
-  if (!cookies.length) {
+  if (!cookies || cookies.length === 0) {
     container.innerHTML = "<p>No cookies found.</p>";
     return;
   }
 
   let stats = getCookieStats(cookies);
 
+  // Display stats for each category
   Object.entries(stats).forEach(([category, data]) => {
     if (data.total > 0) {
       let div = document.createElement("div");
@@ -32,7 +33,8 @@ function displayCookies(cookies) {
     }
   });
 
-  cookies.forEach(cookie => {
+  // Display each cookie's details
+  cookies.forEach((cookie) => {
     let category = categorizeCookie(cookie);
     let div = document.createElement("div");
     div.classList.add("cookie-item", category.toLowerCase());
@@ -41,21 +43,6 @@ function displayCookies(cookies) {
       <p>Category: ${category}</p>
       <p>Domain: ${cookie.domain}</p>
       <p>Expires: ${getExpirationInfo(cookie)}</p>
-    `;
-    container.appendChild(div);
-  });
-}
-
-  
-  cookies.forEach((cookie) => {
-    let category = categorizeCookie(cookie);
-    let div = document.createElement("div");
-    div.classList.add("cookie-item", category);
-    div.innerHTML = `
-      <h3>${cookie.name}</h3>
-      <p>Category: ${category}</p>
-      <p>Domain: ${cookie.domain}</p>
-      <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
     `;
     container.appendChild(div);
   });
@@ -86,7 +73,7 @@ function getCookieStats(cookies) {
     Other: { total: 0, firstParty: 0, thirdParty: 0 }
   };
 
-  cookies.forEach(cookie => {
+  cookies.forEach((cookie) => {
     let category = categorizeCookie(cookie);
     stats[category].total++;
     if (cookie.domain.startsWith(".")) {
@@ -101,9 +88,5 @@ function getCookieStats(cookies) {
 
 function getExpirationInfo(cookie) {
   if (!cookie.expirationDate) return "Session";
-  let expirationDate = new Date(cookie.expirationDate * 1000);
-  let now = new Date();
-  let diff = expirationDate - now;
-  let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  return days > 365 ? "Over a year" : `${days} days`;
-}
+  
+let expirationDate = new Date(cookie.expirationDate *
