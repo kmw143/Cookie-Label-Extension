@@ -2,44 +2,45 @@ document.addEventListener("DOMContentLoaded", function () {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let url = tabs[0].url;
     chrome.runtime.sendMessage({ action: "getCookies", url: url }, (response) => {
-      if (response && response.cookies) {
-        displayCookies(response.cookies);
+      if (response) {
+        displayCookies(response);
       } else {
-        console.error("No cookies found or response is undefined");
+        console.error("No response received from background script.");
         document.getElementById("cookie-list").innerHTML = "<p>No cookies found.</p>";
       }
     });
   });
 });
 
-function displayCookies(cookies) {
+function displayCookies(response) {
   const container = document.getElementById("cookie-list");
-  container.innerHTML = "";
+  
+  const { categories, firstPartyCount, thirdPartyCount } = response;
 
-  if (!cookies.length) {
-    container.innerHTML = "<p>No cookies found.</p>";
-    return;
-  }
+  // Display first-party and third-party counts
+  container.innerHTML += `
+    <h3>Cookie Overview</h3>
+    <p>First-party cookies: ${firstPartyCount}</p>
+    <p>Third-party cookies: ${thirdPartyCount}</p>
+  `;
 
-  cookies.forEach((cookie) => {
-    let category = categorizeCookie(cookie);
-    let div = document.createElement("div");
-    div.classList.add("cookie-item", category);
-    div.innerHTML = `
-      <h3>${cookie.name}</h3>
-      <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
-      <p>Category: ${category}</p>
+  // Display categorized cookies
+  Object.entries(categories).forEach(([category, cookies]) => {
+    let categoryDiv = document.createElement("div");
+    categoryDiv.classList.add("category");
+    categoryDiv.innerHTML = `
+      <h4>${category} Cookies (${cookies.length})</h4>
+      <ul>
+        ${cookies.map(cookie => `
+          <li>
+            <strong>${cookie.name}</strong>
+            <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
+          </li>
+        `).join("")}
+      </ul>
     `;
-    container.appendChild(div);
+    container.appendChild(categoryDiv);
   });
-}
-
-function categorizeCookie(cookie) {
-  if (cookie.httpOnly || cookie.secure) return "functional";
-  if (cookie.name.toLowerCase().includes("analytics") || cookie.name.toLowerCase().includes("ga_")) return "analytics";
-  if (cookie.name.toLowerCase().includes("pref") || cookie.name.toLowerCase().includes("lang")) return "preferences";
-  if (cookie.name.toLowerCase().includes("ad") || cookie.name.toLowerCase().includes("track")) return "marketing";
-  return "unknown";
 }
 
 
