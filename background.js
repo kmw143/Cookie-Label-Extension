@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const categorizedCookies = categorizeCookies(cookies, request.url);
       sendResponse(categorizedCookies);
     });
-    return true; // Keep the message channel open for asynchronous response
+    return true; // Keeps the message channel open for asynchronous response
   }
 });
 
@@ -15,11 +15,11 @@ function categorizeCookies(cookies, tabUrl) {
     Preferences: [],
     Marketing: []
   };
-  
+
   let firstPartyCount = 0;
   let thirdPartyCount = 0;
 
-  cookies.forEach(cookie => {
+  cookies.forEach((cookie) => {
     const category = getCookieCategory(cookie);
     categories[category].push(cookie);
 
@@ -34,16 +34,16 @@ function categorizeCookies(cookies, tabUrl) {
 }
 
 function getCookieCategory(cookie) {
-  if (cookie.name.toLowerCase().includes('analytics') || cookie.name.toLowerCase().includes('ga_')) {
-    return 'Analytics';
-  } else if (cookie.httpOnly || cookie.secure || cookie.name.toLowerCase().includes('session')) {
-    return 'Functional';
-  } else if (cookie.name.toLowerCase().includes('pref') || cookie.name.toLowerCase().includes('lang')) {
-    return 'Preferences';
-  } else if (cookie.name.toLowerCase().includes('ad') || cookie.name.toLowerCase().includes('track')) {
-    return 'Marketing';
+  if (cookie.name.toLowerCase().includes("analytics") || cookie.name.toLowerCase().includes("ga_")) {
+    return "Analytics";
+  } else if (cookie.httpOnly || cookie.secure || cookie.name.toLowerCase().includes("session")) {
+    return "Functional";
+  } else if (cookie.name.toLowerCase().includes("pref") || cookie.name.toLowerCase().includes("lang")) {
+    return "Preferences";
+  } else if (cookie.name.toLowerCase().includes("ad") || cookie.name.toLowerCase().includes("track")) {
+    return "Marketing";
   } else {
-    return 'Functional'; // Default to Functional if unknown
+    return "Functional"; // Default to Functional if unknown
   }
 }
 
