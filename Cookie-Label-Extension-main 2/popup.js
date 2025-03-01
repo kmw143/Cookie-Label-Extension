@@ -48,13 +48,17 @@ function displayCookies(cookies) {
         const cookieDiv = document.createElement("div");
         cookieDiv.classList.add("cookie-item", category);
         cookieDiv.innerHTML = `
-          <p><strong>Expires:</strong> ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
-        `;
+  <strong>Expires:</strong> ${new Date(cookie.expirationDate * 1000).toLocaleString()}
+`;
         categoryDiv.appendChild(cookieDiv);
       });
       container.appendChild(categoryDiv);
     }
   }
+}
+
+function isFirstPartyCookie(cookie) {
+  return cookie.domain === window.location.hostname;
 }
 
 
@@ -76,4 +80,3 @@ function categorizeCookie(cookie) {
   }
   return "unknown";
 }
-
