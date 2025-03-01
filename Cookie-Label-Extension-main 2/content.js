@@ -5,9 +5,20 @@ chrome.runtime.sendMessage({ action: "getCookies", url: window.location.href }, 
 });
 
 function categorizeCookie(cookie) {
-  if (cookie.httpOnly || cookie.secure) return "essential";
-  if (cookie.domain.includes("analytics") || cookie.name.includes("ga_")) return "statistics";
-  if (cookie.name.includes("session") || cookie.name.includes("lang")) return "functional";
-  if (cookie.name.includes("ad") || cookie.name.includes("track")) return "marketing";
+  const name = cookie.name.toLowerCase();
+  const domain = cookie.domain.toLowerCase();
+
+  if (name.includes('session') || name.includes('auth') || name.includes('token') || name.includes('csrf')) {
+    return "functional";
+  }
+  if (name.includes('ga') || name.includes('analytics') || name.includes('stat') || domain.includes('analytics')) {
+    return "analytics";
+  }
+  if (name.includes('pref') || name.includes('setting') || name.includes('theme')) {
+    return "preferences";
+  }
+  if (name.includes('ad') || name.includes('track') || name.includes('pixel') || domain.includes('ad')) {
+    return "marketing";
+  }
   return "unknown";
 }
