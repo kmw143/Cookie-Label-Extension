@@ -25,11 +25,31 @@ function displayCookies(cookies) {
     unknown: []
   };
   
+  let firstPartyCookies = 0;
+  let thirdPartyCookies = 0;
+  
   cookies.forEach((cookie) => {
     let category = categorizeCookie(cookie);
     categories[category].push(cookie);
+    
+    // Count first-party and third-party cookies
+    if (isFirstPartyCookie(cookie)) {
+      firstPartyCookies++;
+    } else {
+      thirdPartyCookies++;
+    }
   });
   
+  // Display cookie count
+  const countDiv = document.createElement("div");
+  countDiv.innerHTML = `
+    <h3>Cookie Count</h3>
+    <p>First-party cookies: ${firstPartyCookies}</p>
+    <p>Third-party cookies: ${thirdPartyCookies}</p>
+  `;
+  container.appendChild(countDiv);
+  
+  // Display cookies by category (existing code)
   for (const [category, cookieList] of Object.entries(categories)) {
     if (cookieList.length > 0) {
       const categoryDiv = document.createElement("div");
@@ -48,6 +68,13 @@ function displayCookies(cookies) {
     }
   }
 }
+
+function isFirstPartyCookie(cookie) {
+  // Compare the cookie domain with the current tab's domain
+  // This is a simplified check and might need to be adjusted based on your specific requirements
+  return cookie.domain === window.location.hostname;
+}
+
 
 function categorizeCookie(cookie) {
   const name = cookie.name.toLowerCase();
