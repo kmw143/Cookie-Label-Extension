@@ -24,3 +24,4 @@ function categorizeCookie(cookie) {
   }
   return "Unknown"; // Default category if no match is found
 }
+
