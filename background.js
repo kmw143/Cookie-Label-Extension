@@ -8,20 +8,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-function categorizeCookies(cookies) {
+function categorizeCookies(cookies, tabUrl) {
   const categories = {
     Analytics: [],
     Functional: [],
     Preferences: [],
     Marketing: []
   };
+  let firstPartyCount = 0;
+  let thirdPartyCount = 0;
 
   cookies.forEach(cookie => {
     const category = getCookieCategory(cookie);
     categories[category].push(cookie);
+    
+    if (isThirdPartyCookie(cookie, tabUrl)) {
+      thirdPartyCount++;
+    } else {
+      firstPartyCount++;
+    }
   });
 
-  return categories;
+  return { categories, firstPartyCount, thirdPartyCount };
 }
 
 function getCookieCategory(cookie) {
