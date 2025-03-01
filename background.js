@@ -1,12 +1,13 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getCookies") {
     chrome.cookies.getAll({ url: request.url }, (cookies) => {
-      const categorizedCookies = categorizeCookies(cookies);
+      const categorizedCookies = categorizeCookies(cookies, request.url);
       sendResponse(categorizedCookies);
     });
     return true;
   }
 });
+
 
 function categorizeCookies(cookies, tabUrl) {
   const categories = {
