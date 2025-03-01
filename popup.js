@@ -2,7 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let url = tabs[0].url;
     chrome.runtime.sendMessage({ action: "getCookies", url: url }, (response) => {
-      displayCookies(response.cookies);
+      if (response && response.cookies) {
+        displayCookies(response.cookies);
+      } else {
+        document.getElementById("cookie-list").innerHTML = "<p>No cookies found or unable to fetch cookies.</p>";
+      }
     });
   });
 });
@@ -11,14 +15,13 @@ function displayCookies(cookies) {
   const container = document.getElementById("cookie-list");
   container.innerHTML = "";
 
-  if (!cookies || cookies.length === 0) {
+  if (!cookies.length) {
     container.innerHTML = "<p>No cookies found.</p>";
     return;
   }
 
   let stats = getCookieStats(cookies);
 
-  // Display stats for each category
   Object.entries(stats).forEach(([category, data]) => {
     if (data.total > 0) {
       let div = document.createElement("div");
@@ -33,7 +36,6 @@ function displayCookies(cookies) {
     }
   });
 
-  // Display each cookie's details
   cookies.forEach((cookie) => {
     let category = categorizeCookie(cookie);
     let div = document.createElement("div");
