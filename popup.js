@@ -2,45 +2,43 @@ document.addEventListener("DOMContentLoaded", function () {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let url = tabs[0].url;
     chrome.runtime.sendMessage({ action: "getCookies", url: url }, (response) => {
-      if (response) {
-        displayCookies(response);
+      if (response && response.cookies && Array.isArray(response.cookies)) {
+        displayCookies(response.cookies);
       } else {
-        console.error("No response received from background script.");
+        console.error("No cookies found or response is invalid.");
         document.getElementById("cookie-list").innerHTML = "<p>No cookies found.</p>";
       }
     });
   });
 });
 
-function displayCookies(response) {
+function displayCookies(cookies) {
   const container = document.getElementById("cookie-list");
-  
-  const { categories, firstPartyCount, thirdPartyCount } = response;
+  container.innerHTML = "";
 
-  // Display first-party and third-party counts
-  container.innerHTML += `
-    <h3>Cookie Overview</h3>
-    <p>First-party cookies: ${firstPartyCount}</p>
-    <p>Third-party cookies: ${thirdPartyCount}</p>
-  `;
+  if (!cookies.length) {
+    container.innerHTML = "<p>No cookies found.</p>";
+    return;
+  }
 
-  // Display categorized cookies
-  Object.entries(categories).forEach(([category, cookies]) => {
-    let categoryDiv = document.createElement("div");
-    categoryDiv.classList.add("category");
-    categoryDiv.innerHTML = `
-      <h4>${category} Cookies (${cookies.length})</h4>
-      <ul>
-        ${cookies.map(cookie => `
-          <li>
-            <strong>${cookie.name}</strong>
-            <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
-          </li>
-        `).join("")}
-      </ul>
+  cookies.forEach((cookie) => {
+    let category = categorizeCookie(cookie);
+    let div = document.createElement("div");
+    div.classList.add("cookie-item", category);
+    div.innerHTML = `
+      <h3>${cookie.name}</h3>
+      <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
+      <p>Category: ${category}</p>
     `;
-    container.appendChild(categoryDiv);
+    container.appendChild(div);
   });
 }
 
+function categorizeCookie(cookie) {
+  if (cookie.httpOnly || cookie.secure) return "essential";
+  if (cookie.domain.includes("analytics") || cookie.name.includes("ga_")) return "statistics";
+  if (cookie.name.includes("session") || cookie.name.includes("lang")) return "functional";
+  if (cookie.name.includes("ad") || cookie.name.includes("track")) return "marketing";
+  return "unknown";
+}
 
