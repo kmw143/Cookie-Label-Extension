@@ -1,3 +1,4 @@
+@import url("another-stylesheet.css"); /* Place this at the top */
 body {
   font-family: Arial, sans-serif;
   width: 300px;
