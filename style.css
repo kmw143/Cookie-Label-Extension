@@ -1,29 +1,28 @@
 body {
-    font-family: Arial, sans-serif;
-    width: 300px;
+  font-family: Arial, sans-serif;
+  width: 300px;
 }
 
 .title-container {
-    width: 100%;
-    text-align: center;
-    padding: 20px 0;
-    background-color: #f8f8f8; /* Optional: Light background for contrast */
-    border-bottom: 1px solid #ddd; /* Optional: Divider line */
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+  background-color: #f8f8f8; /* Optional: Light background for contrast */
+  border-bottom: 1px solid #ddd; /* Optional: Divider line */
 }
 
-h2 {
-    text-align: center;
+.title-container h2 {
+  text-align: center;
 }
 
 .cookie-item {
-    border: 1px solid #ccc;
-    padding: 5px;
-    margin: 5px 0;
-    border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
 }
 
 .essential { background-color: #d4edda; } /* Green */
 .functional { background-color: #cce5ff; } /* Blue */
 .statistics { background-color: #fff3cd; } /* Yellow */
 .marketing { background-color: #f8d7da; } /* Red */
-
