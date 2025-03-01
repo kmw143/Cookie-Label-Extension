@@ -1,7 +1,11 @@
 chrome.runtime.sendMessage({ action: "getCookies", url: window.location.href }, (response) => {
-  response.cookies.forEach((cookie) => {
-    console.log(`Cookie: ${cookie.name}, Category: ${categorizeCookie(cookie)}`);
-  });
+  if (response && response.cookies) {
+    response.cookies.forEach((cookie) => {
+      console.log(`Cookie: ${cookie.name}, Category: ${categorizeCookie(cookie)}`);
+    });
+  } else {
+    console.error("No cookies received or response is undefined.");
+  }
 });
 
 function categorizeCookie(cookie) {
