@@ -50,6 +50,19 @@ function displayCookies(cookies) {
         cookieDiv.innerHTML = `
           <p><strong>Name:</strong> ${cookie.name}</p>
           <p><strong>Domain:</strong> ${cookie.domain}</p>
+          <p><strong>Expires:</strong> ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
+          <p><strong>Type:</strong> ${isFirstPartyCookie(cookie) ? 'First-party' : 'Third-party'}</p>
+        `;
+        categoryDiv.appendChild(cookieDiv);
+      });
+      container.appendChild(categoryDiv);
+    }
+  }
+}
+
+function isFirstPartyCookie(cookie) {
+  return cookie.domain === window.location.hostname;
+}
 
 
 function categorizeCookie(cookie) {
