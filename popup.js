@@ -2,70 +2,44 @@ document.addEventListener("DOMContentLoaded", function () {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let url = tabs[0].url;
     chrome.runtime.sendMessage({ action: "getCookies", url: url }, (response) => {
-      displayCookies(response);
+      if (response && response.cookies) {
+        displayCookies(response.cookies);
+      } else {
+        console.error("No cookies found or response is undefined");
+        document.getElementById("cookie-list").innerHTML = "<p>No cookies found.</p>";
+      }
     });
   });
 });
 
-function displayCookies(response) {
+function displayCookies(cookies) {
   const container = document.getElementById("cookie-list");
   container.innerHTML = "";
-  
-  const { categories, firstPartyCount, thirdPartyCount } = response;
-  
-  // Display first-party and third-party cookie counts
-  const cookieCountDiv = document.createElement("div");
-  cookieCountDiv.innerHTML = `
-    <h2>Cookie Overview</h2>
-    <p>First-party cookies: ${firstPartyCount}</p>
-    <p>Third-party cookies: ${thirdPartyCount}</p>
-  `;
-  container.appendChild(cookieCountDiv);
-  
-  if (Object.values(categories).every(arr => arr.length === 0)) {
-    container.innerHTML += "<p>No cookies found.</p>";
-    return;
-  }
-  
-  Object.entries(categories).forEach(([category, cookies]) => {
-    let categoryDiv = document.createElement("div");
-    categoryDiv.classList.add("category");
-    categoryDiv.innerHTML = `
-      <h2>${category} Cookies (${cookies.length})</h2>
-      <ul>
-        ${cookies.map(cookie => `
-          <li>
-            <strong>${cookie.name}</strong>
-            <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
-          </li>
-        `).join('')}
-      </ul>
-    `;
-    container.appendChild(categoryDiv);
-  });
-}
 
-  
-  if (Object.values(categorizedCookies).every(arr => arr.length === 0)) {
+  if (!cookies.length) {
     container.innerHTML = "<p>No cookies found.</p>";
     return;
   }
-  
-  Object.entries(categorizedCookies).forEach(([category, cookies]) => {
-    let categoryDiv = document.createElement("div");
-    categoryDiv.classList.add("category");
-    categoryDiv.innerHTML = `
-      <h2>${category} Cookies (${cookies.length})</h2>
-      <ul>
-        ${cookies.map(cookie => `
-          <li>
-            <strong>${cookie.name}</strong>
-            <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
-          </li>
-        `).join('')}
-      </ul>
+
+  cookies.forEach((cookie) => {
+    let category = categorizeCookie(cookie);
+    let div = document.createElement("div");
+    div.classList.add("cookie-item", category);
+    div.innerHTML = `
+      <h3>${cookie.name}</h3>
+      <p>Expires: ${new Date(cookie.expirationDate * 1000).toLocaleString()}</p>
+      <p>Category: ${category}</p>
     `;
-    container.appendChild(categoryDiv);
+    container.appendChild(div);
   });
 }
+
+function categorizeCookie(cookie) {
+  if (cookie.httpOnly || cookie.secure) return "functional";
+  if (cookie.name.toLowerCase().includes("analytics") || cookie.name.toLowerCase().includes("ga_")) return "analytics";
+  if (cookie.name.toLowerCase().includes("pref") || cookie.name.toLowerCase().includes("lang")) return "preferences";
+  if (cookie.name.toLowerCase().includes("ad") || cookie.name.toLowerCase().includes("track")) return "marketing";
+  return "unknown";
+}
+
 
