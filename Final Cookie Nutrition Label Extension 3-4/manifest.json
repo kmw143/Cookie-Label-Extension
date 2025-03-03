@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cookie Nutrition Label",
-  "description": "Displays a cookie nutrition label when visiting a website",
+  "description": "Displays a cookie nutrition label when visiting a website (final version)",
   "version": "1.0",
   "permissions": ["cookies", "activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "index.html",
-    "default_icon": "hello_extensions.png"
+    "default_icon": "cookie-icon.png"
   }
 }
 
