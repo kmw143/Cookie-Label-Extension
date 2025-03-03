@@ -1,0 +1,360 @@
+body {
+    width: 400px;
+    margin: 0;
+    padding: 0;
+    display: grid; /* Use CSS Grid for centering */
+    place-items: center; /* Center both horizontally and vertically */
+    line-height: 1.5;
+}
+
+* {
+    color: black;
+}
+
+.title-container {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #56a5f0cf; /* Optional: Light background for contrast */
+    border-bottom: 1px solid #ddd; /* Optional: Divider line */
+}
+
+h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+h2 {
+    text-align: center;
+}
+
+.cookie-item {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+#cookie-count {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.functional { background-color: #d4edda; } /* Green */
+.analytics { background-color: #cce5ff; } /* Blue */
+.preferences { background-color: #fff3cd; } /* Yellow */
+.marketing { background-color: #f8d7da; } /* Red */
+.unknown { background-color: #e9ecef; } /* Gray */
+
+/* Main content */
+.main-content {
+    width: 90%;
+    display: flex;
+    padding-bottom: 20px;
+    flex-direction: column;
+    align-items: center;  /* Centers content horizontally */
+    text-align: center; /* Ensures text is centered */
+}
+
+/* Description text */
+.description {
+    font-size: 12px;
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Flashcard container */
+.flashcards {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 column layout */
+    gap: 10px;
+    width: 100%;
+}
+
+/* Flashcard styling */
+.card {
+    width: 100%;
+    perspective: 1000px;
+    position: relative;
+}
+
+#Functional {
+    height: 150px;
+}
+
+#Marketing {
+    height: 150px;
+}
+
+#Analytics {
+    height: 120px;
+}
+
+#Preferences {
+    height: 100px;
+}
+
+#Unknown {
+    height: 100px;
+}
+
+.notification-badge {
+    position: absolute; /* Position relative to the card */
+    top: -10px; /* Distance from the top */
+    right: -5px; /* Distance from the right */
+    background-color: red; /* Badge color */
+    color: white; /* Text color */
+    border-radius: 8px; /* Make it circular */
+    height: 12px; /* Height of the badge */
+    display: flex; /* Center the number */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    font-size: 10px; /* Font size for the number */
+    padding: 5px;
+}
+
+/* Tooltip styling */
+.tooltip {
+    visibility: hidden; /* Hidden by default */
+    width: 120px; /* Adjust width as needed */
+    background-color: black; /* Tooltip background color */
+    color: white; /* Tooltip text color */
+    text-align: center; /* Center text */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px; /* Padding inside the tooltip */
+    position: absolute; /* Positioning */
+    top: -30px; /* Position above the badge */
+    right: -10px; /* Adjust to position next to the badge */
+    opacity: 0; /* Invisible by default */
+    transition: opacity 0.3s; /* Smooth transition */
+}
+
+/* Show tooltip on hover */
+.notification-badge:hover .tooltip {
+    visibility: visible; /* Show tooltip */
+    opacity: 1; /* Make it visible */
+} 
+
+/* Flip effect */
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(-180deg);
+}
+
+/* Front & Back styling */
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc; /* Sharp corners */
+}
+
+/* Front styling */
+#Functional .card-front, #Functional .card-back {
+    background-color: rgb(229, 229, 229);
+    color: white;
+}
+
+#Analytics .card-front, #Analytics .card-back {
+    background-color: #ee965f;
+    color: white;
+}
+
+#Preferences .card-front, #Preferences .card-back {
+    background-color: #7de089;
+    color: white;
+}
+
+#Marketing .card-front, #Marketing .card-back {
+    background-color: #cb6cdc;
+    color: white;
+}
+
+/* Content styling */
+.card-icon {
+    width: 70px;
+    margin-left: 5px;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Image styling */
+.card-image {
+    width: 40px; /* Square size */
+    height: 40px; /* Square size */
+}
+
+/* Label styling */
+.label {
+    font-size: 14px; /* Smaller font size for label */
+    font-weight: bold;
+    /* text-align: center; */
+}
+
+.category-description {
+    display: flex; /* Enable Flexbox */
+    align-items: center; /* Center vertically */
+    justify-content: center;
+    margin-left: 5px;
+    margin-right: 10px;
+    width: 280px;
+    height: 80px;
+    background-color: #cbcbcb71;
+    border-radius: 5px;
+}
+
+.front-description-text {
+    width: 260px;
+    padding-left: 5px;
+    font-size: 10px;
+    text-align: left;
+}
+
+.use-text {
+    font-size: 12px; /* Adjust the size as needed */
+    /* font-weight: bold; */
+}
+
+.duration-icon {
+    margin-right: 5px;
+    width: 11px;
+    height: 11px;
+}
+
+/* Back styling */
+.card-back {
+    transform: rotateY(180deg);
+    font-size: 10px;
+}
+
+.flex-container {
+    display: flex; /* Enable Flexbox */
+    justify-content: flex-start; /* Space between the columns */
+    height: 90%;
+}
+
+.uses-section,
+.data-section {
+    width: 160px;
+    flex: 1; /* Allow both sections to grow equally */
+    border-radius: 5px; /* Rounded corners for the sections */
+    background-color: #ffffff54; /* Background color for sections */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    text-align: left; /* Left-align the text */
+    padding-left: 10px;
+    display: flex; /* Enable Flexbox for vertical centering */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+}
+
+.purposes-icon,
+.third-party-icon {
+    width: 15px;
+    height: 15px;
+    align-self: center;
+}
+
+.data-section {
+    margin-left: 10px; /* Remove margin for the last column */
+}
+
+p {
+    line-height: 1.5; /* Adjust this value to decrease line spacing */
+    margin: 0; /* Remove default margin */
+}
+
+.uses, .data {
+    list-style-type: disc; /* Bullet points for the list */
+    margin: 0; /* Remove default margin from the list */
+    padding: 10px; /* Set padding for the list items */
+}
+
+
+/* Folded corner effect */
+.card-front::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.537);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    transform: rotate(90deg);
+}
+
+/* Increase visibility on click */
+.card.flipped .card-front::after {
+    opacity: 0;
+}
+
+/* Third party providers info */
+
+.hidden-div {
+    position: fixed; /* Fixed positioning to center it on the screen */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset to center */
+    width: 300px; /* Set the desired width */
+    height: auto;
+    background-color: #56a5f0; /* Background color with transparency */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    overflow: hidden; /* Hide overflow content */
+    display: flex; /* Enable Flexbox */
+    flex-direction: column; /* Stack items vertically */
+}
+
+.hidden-div-content {
+    padding: 20px; /* Padding inside the hidden div */
+    display: flex; /* Enable Flexbox for centering */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    height: auto; /* Full height of the hidden div */
+}
+
+.close-button {
+    position: absolute; /* Position the button in the corner */
+    top: 10px; /* Distance from the top */
+    right: 10px; /* Distance from the right */
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove default border */
+    font-size: 18px; /* Font size for the button */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+.hyperlink-list {
+    background-color: rgba(255, 255, 255, 0.54); /* White background for content with transparency */
+    border-radius: 10px; /* Rounded corners */
+    width: 80%;
+    list-style-type: none; /* Remove default list styles */
+    padding: 10px; /* Remove padding */
+    margin: 10px 0 0; /* Margin for spacing */
+}
+
+.hyperlink-list a {
+    color: black; /* Link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.hyperlink-list a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
